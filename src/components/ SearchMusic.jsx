@@ -32,7 +32,18 @@ import { fetchMusic } from '../utilities/api'
 
 
   return (
-    <div> SearchBar</div>
+    <div>
+      <h1>🔎 Scout Your Vybe</h1>
+      <form onSubmit={handleSubmit}>
+        <input 
+        type="text" 
+        placeholder='Search Music'
+        value={searchMusic}
+        onChange={(event)=>setSearchMusic(event.target.value)}
+        />
+        <button type='submit'>Scout</button>
+      </form>
+    </div>
   )
 
 
