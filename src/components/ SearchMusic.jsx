@@ -28,7 +28,7 @@ import { fetchMusic } from '../utilities/api'
       }   
      }
      
-    };
+    
 
 
   return (
@@ -43,8 +43,25 @@ import { fetchMusic } from '../utilities/api'
         />
         <button type='submit'>Scout</button>
       </form>
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {music.length > 0 &&(
+        <div>
+          <h2>Results:</h2>
+          <ul>
+            {music.map((track)=>(
+              <li key={track.trackId}>
+                {track.trackName.toUpperCase()}by{track.artistName}
+              </li>
+            ))}
+          </ul>
+
+        </div>
+      )} 
     </div>
   )
+  
+};
 
-
-export default  SearchMusic
+export default  MusicSearch

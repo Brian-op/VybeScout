@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import './App.css'
+import SearchMusic from './components/ SearchMusic'
+
 
 function App() {
  
  return (
    <>
+   <SearchMusic/>
    </>
   )
 }
