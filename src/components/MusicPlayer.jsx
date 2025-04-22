@@ -7,14 +7,15 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
   const [isBuffering, setIsBuffering] = useState(false);
 
   useEffect(() => {
+    if (!track) return;
     if (track.trackId !== currentlyPlayingId && audioRef.current) {
       audioRef.current.pause();
       setIsTrackPlaying(false);
     }
-  }, [currentlyPlayingId, track.trackId]);
+  }, [currentlyPlayingId, track]);
 
   const togglePlayPause = () => {
-    if (!audioRef.current) return;
+    if (!track || !audioRef.current) return;
 
     if (isTrackPlaying) {
       audioRef.current.pause();
@@ -39,6 +40,9 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
     setIsTrackPlaying(false);
     onPlayPause(null);
   };
+
+  
+  if (!track) return null;
 
   return (
     <div className="music-player">

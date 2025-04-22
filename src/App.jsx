@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SearchMusic from './components/ SearchMusic'
+import MusicPlayer from './components/MusicPlayer'
 
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
  return (
    <>
    <SearchMusic/>
+   <MusicPlayer/>
    </>
   )
 }
