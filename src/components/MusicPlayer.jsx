@@ -6,18 +6,13 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
   const [isTrackPlaying, setIsTrackPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
 
-
-  
   useEffect(() => {
     if (!track) return;
-
-
-    if (track.trackId !== currentlyPlayingId && audioRef.current) {
+    if (track.trackId !== currentlyPlayingId && audioRef.current) { 
       audioRef.current.pause();
       setIsTrackPlaying(false);
     }
   }, [currentlyPlayingId, track]);
-
 
   const togglePlayPause = () => {
     if (!track || !audioRef.current) return;
@@ -25,29 +20,25 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
     if (isTrackPlaying) {
       audioRef.current.pause();
       setIsTrackPlaying(false);
-      onPlayPause(null); 
+      onPlayPause(null);
     } else {
       audioRef.current.play();
       setIsTrackPlaying(true);
-      onPlayPause(track.trackId); 
+      onPlayPause(track.trackId);
     }
   };
 
- 
   const handleAudioLoading = () => {
     setIsBuffering(true);
   };
 
- 
   const handleAudioPlaying = () => {
     setIsBuffering(false);
   };
 
- 
-
   const handleAudioEnded = () => {
     setIsTrackPlaying(false);
-    onPlayPause(null); 
+    onPlayPause(null);
   };
 
   if (!track) return null;
@@ -62,9 +53,9 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
         </div>
       </div>
 
-      <audio 
-        ref={audioRef} 
-        src={track.previewUrl} 
+      <audio
+        ref={audioRef}
+        src={track.previewUrl}
         onPlay={handleAudioPlaying}
         onWaiting={handleAudioLoading}
         onEnded={handleAudioEnded}
