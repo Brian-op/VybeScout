@@ -1,12 +1,4 @@
 /* Styles here affect everything, like resetting defaults or setting the font for the whole app
-Usually imported in < main.jsx > */
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+Usually imported in the main entry file (like index.js or App.js) */
 
 
-h1{
-  color: red;
-}
