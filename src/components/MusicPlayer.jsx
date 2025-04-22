@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaPlay, FaPause, FaSpinner } from 'react-icons/fa'; 
+import { FaPlay, FaPause, FaSpinner } from 'react-icons/fa';
 
 const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
   const audioRef = useRef(null);
   const [isTrackPlaying, setIsTrackPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
 
+
+  
   useEffect(() => {
     if (!track) return;
+
+
     if (track.trackId !== currentlyPlayingId && audioRef.current) {
       audioRef.current.pause();
       setIsTrackPlaying(false);
     }
   }, [currentlyPlayingId, track]);
+
 
   const togglePlayPause = () => {
     if (!track || !audioRef.current) return;
@@ -24,24 +29,27 @@ const MusicPlayer = ({ track, isPlaying, onPlayPause, currentlyPlayingId }) => {
     } else {
       audioRef.current.play();
       setIsTrackPlaying(true);
-      onPlayPause(track.trackId);
+      onPlayPause(track.trackId); 
     }
   };
 
+ 
   const handleAudioLoading = () => {
     setIsBuffering(true);
   };
 
+ 
   const handleAudioPlaying = () => {
     setIsBuffering(false);
   };
 
+ 
+
   const handleAudioEnded = () => {
     setIsTrackPlaying(false);
-    onPlayPause(null);
+    onPlayPause(null); 
   };
 
-  
   if (!track) return null;
 
   return (
