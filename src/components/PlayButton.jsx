@@ -1,5 +1,5 @@
 import React from 'react'
-
+//you shall import this kwa music player then use it to initiate the music player function
 function PlayButton ({clickToPlay})  {
   return (
         <button onClick={clickToPlay} aria-label="Play">
