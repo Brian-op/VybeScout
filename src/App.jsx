@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SearchMusic from './components/ SearchMusic'
+import './styles/App.css'
 
 
 function App() {
@@ -12,3 +13,5 @@ function App() {
 }
 
 export default App
+
+
