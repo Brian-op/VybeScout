@@ -10,5 +10,5 @@ export const fetchMusic = async (term) => {
         console.error("Failed to Fetch Music!!",error)
         return[];
     }
-    
+    // This function fetches music data from the iTunes API based on the search term provided.
 }
