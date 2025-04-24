@@ -1,7 +1,10 @@
 /* Styles here are more focused and scoped to what’s inside <App />
 Usually imported in <App.jsx> */
 
+<<<<<<< HEAD
  edwinndungu
+=======
+>>>>>>> parent of e62bc75 (Merge pull request #8 from Brian-op/nazuri-branch)
 *:root {
   --bg-color: #fef8f4;
   --accent-color: #e07a5f;
@@ -39,8 +42,13 @@ h1 {
     justify-content: center;
     padding: 10px;
     border: 2px solid #ff0000;
+<<<<<<< HEAD
     border-radius: 8px;
     width: 300px; 
+=======
+    border-radius: 100ex;
+    width: 400px; 
+>>>>>>> parent of e62bc75 (Merge pull request #8 from Brian-op/nazuri-branch)
     background-color: #460101;
     margin: 20px auto;
     
@@ -70,7 +78,11 @@ input[type="text"] {
     border-radius: 4px;
     cursor: pointer;
     
+<<<<<<< HEAD
 }
+=======
+  }
+>>>>>>> parent of e62bc75 (Merge pull request #8 from Brian-op/nazuri-branch)
 
 button:hover {
     background: lightcoral;
@@ -111,6 +123,7 @@ li {
 }
 li:hover {
     background-color: rgb(255, 0, 0);
+<<<<<<< HEAD
     color: #000000;
     transform: scale(1.05);
     transition: background-color 0.3s, color 0.3s;
@@ -118,4 +131,8 @@ li:hover {
     
 }
  main
+=======
+    
+}
+>>>>>>> parent of e62bc75 (Merge pull request #8 from Brian-op/nazuri-branch)
 
