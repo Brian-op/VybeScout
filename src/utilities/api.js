@@ -1,5 +1,5 @@
 export const fetchMusic = async (term) => {
-    const URL = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=musicTrack&limit=15`;
+    const URL = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&media=music&entity=musicTrack&limit=30`;
 
     try{
         const response = await fetch(URL);

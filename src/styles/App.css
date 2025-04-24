@@ -1,6 +1,7 @@
 /* Styles here are more focused and scoped to what’s inside <App />
 Usually imported in <App.jsx> */
 
+ edwinndungu
 *:root {
   --bg-color: #fef8f4;
   --accent-color: #e07a5f;
@@ -116,4 +117,5 @@ li:hover {
     cursor: pointer;
     
 }
+ main
 
