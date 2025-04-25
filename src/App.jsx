@@ -1,10 +1,5 @@
-
-import SearchMusic from './components/ SearchMusic'
-import MusicPlayer from './components/MusicPlayer';
-
-
-  import { useState } from 'react'
-import SearchMusic from './components/ SearchMusic'
+import { useState } from 'react'
+import SearchMusic from './components/ SearchMusic';
 import MusicPlayer from './components/MusicPlayer';
  main
 

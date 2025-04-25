@@ -1,9 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
-import {
-  FaPlay, FaPause, FaForward, FaBackward,
-  FaVolumeMute, FaVolumeUp, FaRandom, FaRedo
-} from 'react-icons/fa';
+import { FaBackward, FaForward, FaVolumeMute, FaVolumeUp, FaRandom, FaRedo } from 'react-icons/fa';
 import { fetchMusic } from '../utilities/api'; 
+import PlayButton from './PlayButton'; 
 
 const MusicPlayer = () => {
   const audioRef = useRef(null);
@@ -17,6 +15,7 @@ const MusicPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [searchTerm] = useState('Mw3ndw4, Ariana Grande..');
+  const [currentTrack, setCurrentTrack] = useState(null);
 
   useEffect(() => {
     const loadMusic = async () => {
@@ -40,7 +39,33 @@ const MusicPlayer = () => {
     loadMusic();
   }, [searchTerm]);
 
-  const currentTrack = playlist[currentTrackIndex];
+  const handleTrackChange = (newTrack) => {
+    if (audioRef.current) {
+      // Pause and reset the previous track when a new one is selected
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    
+    setCurrentTrack(newTrack);
+    setIsPlaying(true); // Automatically play the new track
+  };
+
+  const handlePlay = (track) => {
+    if (currentTrack && currentTrack.trackId === track.trackId) {
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
+      }
+    } else {
+      if (audioRef.current) {
+        audioRef.current.pause(); 
+        audioRef.current.currentTime = 0; 
+      }
+      setCurrentTrack(track); 
+      setIsPlaying(true); // Automatically play the new track
+    }
+  };
 
   const nextTrack = useCallback(() => {
     setCurrentTrackIndex((prevIndex) => {
@@ -90,22 +115,38 @@ const MusicPlayer = () => {
   }, [repeatMode, nextTrack]);
 
   useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !currentTrack) return;
+
     const playAudio = async () => {
-      if (isPlaying && audioRef.current) {
+      audio.load();
+      if (isPlaying) {
         try {
-          await audioRef.current.play();
+          await audio.play();
         } catch (err) {
           console.error("Playback error:", err);
         }
-      } else {
-        audioRef.current?.pause();
       }
     };
 
     playAudio();
   }, [currentTrackIndex, isPlaying]);
 
-  const togglePlay = () => setIsPlaying((prev) => !prev);
+  const togglePlay = async () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      try {
+        await audio.play();
+      } catch (err) {
+        console.error("Playback error on toggle:", err);
+      }
+    }
+    setIsPlaying((prev) => !prev);
+  };
 
   const setPlayerVolume = (level) => {
     const volumeLevel = parseFloat(level);
@@ -145,9 +186,7 @@ const MusicPlayer = () => {
 
       <div className="controls">
         <button onClick={previousTrack}><FaBackward /></button>
-        <button onClick={togglePlay}>
-          {isPlaying ? <FaPause /> : <FaPlay />}
-        </button>
+        <PlayButton clickToPlay={togglePlay} /> 
         <button onClick={nextTrack}><FaForward /></button>
         <button onClick={() => setShuffleMode(prev => !prev)}>
           <FaRandom color={shuffleMode ? 'gold' : 'white'} />
