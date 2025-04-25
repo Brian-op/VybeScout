@@ -1,5 +1,8 @@
 /* Styles here are more focused and scoped to what’s inside <App />
 Usually imported in <App.jsx> */
+/* Styles here are more focused and scoped to what’s inside <App />
+Usually imported in <App.jsx> */
+
 
 *:root {
   --bg-color: #fef8f4;
@@ -92,6 +95,8 @@ h2 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+
+main
 ul {
     list-style: none;
     padding: 20px;
@@ -110,6 +115,11 @@ li {
 }
 li:hover {
     background-color: rgb(255, 0, 0);
+    color: #000000;
+    transform: scale(1.05);
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
     
 }
+ 
 
