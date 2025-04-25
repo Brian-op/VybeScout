@@ -3,7 +3,7 @@ import {
   FaPlay, FaPause, FaForward, FaBackward,
   FaVolumeMute, FaVolumeUp, FaRandom, FaRedo
 } from 'react-icons/fa';
-import { fetchMusic } from './api'; 
+import { fetchMusic } from '../utilities/api'; 
 
 const MusicPlayer = () => {
   const audioRef = useRef(null);
@@ -15,19 +15,26 @@ const MusicPlayer = () => {
   const [shuffleMode, setShuffleMode] = useState(false);
   const [repeatMode, setRepeatMode] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [searchTerm] = useState('Mw3ndw4, Ariana Grande..'); 
+  const [duration, setDuration] = useState(0);
+  const [searchTerm] = useState('Mw3ndw4, Ariana Grande..');
 
   useEffect(() => {
     const loadMusic = async () => {
-      const results = await fetchMusic(searchTerm);
-      const formatted = results.map((track, index) => ({
-        id: index,
-        title: track.trackName,
-        artist: track.artistName,
-        src: track.previewUrl,
-        artwork: track.artworkUrl100
-      }));
-      setPlaylist(formatted);
+      try {
+        const results = await fetchMusic(searchTerm);
+        const formatted = results
+          .filter(track => track.previewUrl) 
+          .map((track, index) => ({
+            id: index,
+            title: track.trackName,
+            artist: track.artistName,
+            src: track.previewUrl,
+            artwork: track.artworkUrl100
+          }));
+        setPlaylist(formatted);
+      } catch (err) {
+        console.error("Failed to fetch music:", err);
+      }
     };
 
     loadMusic();
@@ -55,7 +62,9 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     const audio = audioRef.current;
+
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration);
     const handleEnded = () => {
       if (repeatMode) {
         audio.currentTime = 0;
@@ -67,46 +76,56 @@ const MusicPlayer = () => {
 
     if (audio) {
       audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
       audio.addEventListener('ended', handleEnded);
     }
 
     return () => {
       if (audio) {
         audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         audio.removeEventListener('ended', handleEnded);
       }
     };
   }, [repeatMode, nextTrack]);
 
   useEffect(() => {
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play();
-    } else if (audioRef.current) {
-      audioRef.current.pause();
-    }
+    const playAudio = async () => {
+      if (isPlaying && audioRef.current) {
+        try {
+          await audioRef.current.play();
+        } catch (err) {
+          console.error("Playback error:", err);
+        }
+      } else {
+        audioRef.current?.pause();
+      }
+    };
+
+    playAudio();
   }, [currentTrackIndex, isPlaying]);
 
   const togglePlay = () => setIsPlaying((prev) => !prev);
 
   const setPlayerVolume = (level) => {
     const volumeLevel = parseFloat(level);
-    audioRef.current.volume = volumeLevel;
+    if (audioRef.current) audioRef.current.volume = volumeLevel;
     setVolume(volumeLevel);
   };
 
   const mute = () => {
-    audioRef.current.muted = true;
+    if (audioRef.current) audioRef.current.muted = true;
     setIsMuted(true);
   };
 
   const unmute = () => {
-    audioRef.current.muted = false;
+    if (audioRef.current) audioRef.current.muted = false;
     setIsMuted(false);
   };
 
   const seek = (time) => {
     const newTime = parseFloat(time);
-    audioRef.current.currentTime = newTime;
+    if (audioRef.current) audioRef.current.currentTime = newTime;
     setCurrentTime(newTime);
   };
 
@@ -126,12 +145,14 @@ const MusicPlayer = () => {
 
       <div className="controls">
         <button onClick={previousTrack}><FaBackward /></button>
-        <button onClick={togglePlay}>{isPlaying ? <FaPause /> : <FaPlay />}</button>
+        <button onClick={togglePlay}>
+          {isPlaying ? <FaPause /> : <FaPlay />}
+        </button>
         <button onClick={nextTrack}><FaForward /></button>
-        <button onClick={() => setShuffleMode((prev) => !prev)}>
+        <button onClick={() => setShuffleMode(prev => !prev)}>
           <FaRandom color={shuffleMode ? 'gold' : 'white'} />
         </button>
-        <button onClick={() => setRepeatMode((prev) => !prev)}>
+        <button onClick={() => setRepeatMode(prev => !prev)}>
           <FaRedo color={repeatMode ? 'gold' : 'white'} />
         </button>
         <button onClick={isMuted ? unmute : mute}>
@@ -148,11 +169,12 @@ const MusicPlayer = () => {
       </div>
 
       <div className="progress">
-        <span>{Math.floor(currentTime)} / {Math.floor(audioRef.current?.duration || 0)} sec</span>
+        <span>{Math.floor(currentTime)} / {Math.floor(duration)} sec</span>
         <input
           type="range"
           min="0"
-          max={audioRef.current?.duration || 1}
+          max={duration || 1}
+          step="0.1"
           value={currentTime}
           onChange={(e) => seek(e.target.value)}
         />
