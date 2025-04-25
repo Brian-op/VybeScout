@@ -1,18 +1,14 @@
-import { useState } from 'react'
-import SearchMusic from './components/ SearchMusic';
+import { useState } from'react'
+import SearchMusic from './components/SearchMusic';
 import MusicPlayer from './components/MusicPlayer';
- main
-
-
-
+import './styles/App.css'
 function App() {
- 
 
- 
  return (
    <>
    <SearchMusic/>
    <MusicPlayer/>
+   
    </>
   )
 }
