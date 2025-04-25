@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { fetchMusic } from '../utilities/api';
 
-function MusicSearch() {
+function SearchMusic() {
   const [searchMusic, setSearchMusic] = useState('');
   const [music, setMusic] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -84,4 +84,4 @@ function MusicSearch() {
   );
 }
 
-export default MusicSearch;
+export default SearchMusic;
